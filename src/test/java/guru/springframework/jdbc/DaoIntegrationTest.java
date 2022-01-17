@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @DataJpaTest
 @ComponentScan(basePackages = {"guru.springframework.jdbc.dao"})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class DaoIntegrationTest {
+class DaoIntegrationTest {
     @Autowired
     AuthorDao authorDao;
 
@@ -99,14 +99,11 @@ public class DaoIntegrationTest {
         author.setFirstName("john");
         author.setLastName("t");
 
-        Author saved = authorDao.saveNewAuthor(author);
+        var savedAuthorId = authorDao.saveNewAuthor(author).getId();
 
-        authorDao.deleteAuthorById(saved.getId());
+        authorDao.deleteAuthorById(savedAuthorId);
 
-        assertThrows(EmptyResultDataAccessException.class, () -> {
-            Author deleted = authorDao.getById(saved.getId());
-        });
-
+        assertThrows(JpaObjectRetrievalFailureException.class, () -> authorDao.getById(savedAuthorId));
     }
 
     @Test
