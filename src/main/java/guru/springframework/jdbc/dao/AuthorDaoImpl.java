@@ -27,7 +27,7 @@ public class AuthorDaoImpl implements AuthorDao {
     @Override
     public Author findAuthorByName(String firstName, String lastName) {
         return authorRepository.findAuthorByFirstNameAndLastName(firstName, lastName)
-            .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(EntityNotFoundException::new);
     }
 
     @Override
@@ -38,10 +38,9 @@ public class AuthorDaoImpl implements AuthorDao {
     @Transactional
     @Override
     public Author updateAuthor(Author author) {
-        var foundAuthor = this.getById(author.getId());
+        Author foundAuthor = authorRepository.getById(author.getId());
         foundAuthor.setFirstName(author.getFirstName());
         foundAuthor.setLastName(author.getLastName());
-
         return authorRepository.save(foundAuthor);
     }
 
@@ -50,3 +49,13 @@ public class AuthorDaoImpl implements AuthorDao {
         authorRepository.deleteById(id);
     }
 }
+
+
+
+
+
+
+
+
+
+
