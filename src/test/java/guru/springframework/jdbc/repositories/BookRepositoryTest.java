@@ -9,11 +9,11 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("local")
 @DataJpaTest
@@ -23,6 +23,15 @@ class BookRepositoryTest {
 
     @Autowired
     BookRepository bookRepository;
+
+    @Test
+    void testAsyncQueryByTitle() throws ExecutionException, InterruptedException {
+        var futureBook = bookRepository.queryByTitle("Clean Code");
+
+        var book = futureBook.get();
+
+        assertNotNull(book);
+    }
 
     @Test
     void bookStream() {
