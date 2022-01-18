@@ -25,6 +25,13 @@ class BookRepositoryTest {
     BookRepository bookRepository;
 
     @Test
+    void findByTitleJPANamedQuery() {
+        var book = bookRepository.jpaNamed("Clean Code");
+
+        assertNotNull(book);
+    }
+
+    @Test
     void findByTitleNativeQuery() {
         var book = bookRepository.findBookByTitleNativeQuery("Clean Code");
 
