@@ -25,6 +25,13 @@ class BookRepositoryTest {
     BookRepository bookRepository;
 
     @Test
+    void findByTitleQuery() {
+        var book = bookRepository.findBookByTitleWithQuery("Clean Code");
+
+        assertNotNull(book);
+    }
+
+    @Test
     void testAsyncQueryByTitle() throws ExecutionException, InterruptedException {
         var futureBook = bookRepository.queryByTitle("Clean Code");
 
