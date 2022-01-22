@@ -31,6 +31,25 @@ class BookDaoJDBCTemplateTest {
     }
 
     @Test
+    void findAllBooksPage1() {
+        var bookList = bookDao.findAllBooks(10, 0);
+
+        assertThat(bookList)
+            .isNotNull()
+            .matches(books -> books.size() >= 5);
+    }
+
+    @Test
+    void findAllBooksPage2() {
+        var bookList = bookDao.findAllBooks(10, 10);
+
+        assertThat(bookList)
+            .isNotNull()
+            .matches(books -> books.size() == 0);
+    }
+
+
+    @Test
     void findAllBooks() {
         var bookList = bookDao.findAllBooks();
 
