@@ -37,7 +37,14 @@ class BookDaoHibernateTest {
 
     @Test
     void findAllBooksSortByTitle() {
+        var bookList
+            = bookDao.findAllBooksSortByTitle(PageRequest.of(0,
+            10,
+            Sort.by(Sort.Order.desc("title"))));
 
+        assertThat(bookList)
+            .isNotNull()
+            .matches(books -> books.size() >= 5);
     }
 
     @Test
