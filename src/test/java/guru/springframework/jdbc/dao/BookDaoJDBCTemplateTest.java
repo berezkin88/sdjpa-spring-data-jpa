@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -31,6 +32,24 @@ class BookDaoJDBCTemplateTest {
     }
 
     @Test
+    void findAllBooksPageable1() {
+        var bookList = bookDao.findAllBooks(PageRequest.of(0, 10));
+
+        assertThat(bookList)
+            .isNotNull()
+            .matches(books -> books.size() >= 5);
+    }
+
+    @Test
+    void findAllBooksPageable2() {
+        var bookList = bookDao.findAllBooks(PageRequest.of(1, 10));
+
+        assertThat(bookList)
+            .isNotNull()
+            .matches(books -> books.size() == 0);
+    }
+
+    @Test
     void findAllBooksPage1() {
         var bookList = bookDao.findAllBooks(10, 0);
 
@@ -47,7 +66,6 @@ class BookDaoJDBCTemplateTest {
             .isNotNull()
             .matches(books -> books.size() == 0);
     }
-
 
     @Test
     void findAllBooks() {
