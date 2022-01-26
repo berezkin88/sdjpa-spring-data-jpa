@@ -87,7 +87,7 @@ public class BookDaoHibernate implements BookDao {
 
             return (Book) query.getSingleResult();
         } finally {
-            em.close();;
+            em.close();
         }
     }
 
